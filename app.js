@@ -171,13 +171,16 @@ app.post('/login', async (req, res) => {
         password: req.body.password
     });
 
+// console.log(user);
+
     req.login(user, function (err) {
         if (err) {
             console.log(err);
         }
         else {
             passport.authenticate("local")(req, res, function () {
-                res.redirect('/secrets');
+                // res.redirect('/secrets');
+                res.send("Login successful")
             });
 
         }
@@ -205,7 +208,7 @@ app.post('/submit', async (req, res) => {
     const user = await User.findById(req.user.id);
     if (user) {
         user.secret = secret;
-        user.save();
+        await user.save();
         res.redirect('/secrets');
     }
 
